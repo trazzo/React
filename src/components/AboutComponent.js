@@ -1,36 +1,8 @@
 import React from 'react';
-import RenderLeader from './RenderLeaderComponent'
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-/*
-I have modularized it a little bit creating another module for the RenderLeaderComponent
 
-import React from 'react';
-import { Media } from 'reactstrap';
-
-const RenderLeader = (props) => {
-    return (
-        <div>
-            <Media tag="li">
-                <Media left>
-                    <Media object src={props.leader.image} alt={props.leader.name} />
-                </Media>
-                <Media body>
-                    <Media heading>
-                        {props.leader.name}
-                    </Media>
-                    {props.leader.designation}
-                    <br></br>
-                    {props.leader.description}
-                </Media>
-            </Media>
-        </div>
-    ); 
-}
-
-export default RenderLeader;
-*/
 
 function About(props) {
 
@@ -41,6 +13,26 @@ function About(props) {
             </div>
         );
     });
+
+    function RenderLeader({leader}) {
+        return(
+            <div>
+                <Media tag="li">
+                    <Media left>
+                        <Media object src={leader.image} alt={leader.name} />
+                    </Media>
+                    <Media body>
+                        <Media heading>
+                            {leader.name}
+                        </Media>
+                        {leader.designation}
+                        <br></br>
+                        {leader.description}
+                    </Media>
+                </Media>
+            </div>
+        );
+    }
 
     return(
         <div className="container">
