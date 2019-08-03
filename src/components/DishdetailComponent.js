@@ -7,7 +7,7 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
 
-class CommentComponent extends Component {
+class CommentForm extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class CommentComponent extends Component {
         }
 
         this.toggleModal = this.toggleModal.bind(this);
-        this.handleSubmitComment = this.handleSubmitComment.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     toggleModal() {
@@ -26,9 +26,9 @@ class CommentComponent extends Component {
         });
     }
 
-    handleSubmitComment(values) {
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+    handleSubmit(values) {
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -40,7 +40,7 @@ class CommentComponent extends Component {
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
-                        <LocalForm  onSubmit={(values) => this.handleSubmitComment(values)}>
+                        <LocalForm  onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="rating">Rating</Label>
                                 <Control.select model=".rating" id="rating" 
@@ -111,7 +111,7 @@ class CommentComponent extends Component {
         );
     }
 
-    function RenderComments({comments}) {
+    function RenderComments({comments, addComment, dishId}) {
         const commentList = comments.map((comment) => {
             return (
                     <ul  key={comment.id} className="list-unstyled">
@@ -125,7 +125,7 @@ class CommentComponent extends Component {
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
                 {commentList}
-                <CommentComponent></CommentComponent>
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     }
@@ -146,7 +146,10 @@ class CommentComponent extends Component {
                 </div>
                     <div className="row">
                         <RenderDish dish = {props.dish} />
-                        <RenderComments comments = {props.comments} />
+                        <RenderComments comments = {props.comments}
+                            addComment={props.addComment}
+                            dishId={props.dish.id}
+                        />
                     </div>
                 </div>
             );
