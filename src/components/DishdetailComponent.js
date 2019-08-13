@@ -133,7 +133,7 @@ class CommentForm extends Component {
     }
 
     const DishDetail = (props) => {
-        if (props.isLoaging) {
+        if (props.isLoading) {
             return(
                 <div className="container">
                     <div className="row">
