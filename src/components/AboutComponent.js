@@ -1,12 +1,13 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
-
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             <div key={leader.id} className="col-12 m-1">
                 <RenderLeader leader={leader}/>
@@ -15,23 +16,46 @@ function About(props) {
     });
 
     function RenderLeader({leader}) {
-        return(
-            <div>
-                <Media tag="li">
-                    <Media left>
-                        <Media object src={leader.image} alt={leader.name} />
-                    </Media>
-                    <Media body>
-                        <Media heading>
-                            {leader.name}
+        if(props.leaders.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.leaders.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">
+                        <h4>{props.leaders.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else 
+            return(
+                <div>
+                    <Stagger in>
+                    <Fade in>
+                        <Media tag="li">
+                            <Media left>
+                                <Media object src={baseUrl + leader.image} alt={leader.name} />
+                            </Media>
+                            <Media body>
+                                <Media heading>
+                                    {leader.name}
+                                </Media>
+                                {leader.designation}
+                                <br></br>
+                                {leader.description}
+                            </Media>
                         </Media>
-                        {leader.designation}
-                        <br></br>
-                        {leader.description}
-                    </Media>
-                </Media>
-            </div>
-        );
+                    </Fade>
+                    </Stagger>
+                </div>
+            );
     }
 
     return(
